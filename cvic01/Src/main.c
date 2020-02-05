@@ -11,11 +11,23 @@
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
+#include "stm32f0xx.h"
+
 int main(void)
 {
+	int i = 0;
+	int j = 0;
 
-	for(;;){
+	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
+	GPIOA->MODER |= GPIO_MODER_MODER5_0;
 
 
+	while(1){
+		for(j=0;j<1000000;j++){
+		}
+		GPIOA->BSRR = (1<<5); // set
+		for(j=0;j<1000000;j++){
+		}
+		GPIOA->BRR = (1<<5); // reset
 	}
 }
