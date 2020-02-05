@@ -13,54 +13,43 @@
 
 #include "stm32f0xx.h"
 
-void one(int c){
+void one()
+{
 	int j;
-	for(;c>0;c--){
-		GPIOA->BSRR = (1<<5); // set
-		for(j=0;j<200000;j++);
-	}
+
+	GPIOA->BSRR = (1<<5); // set
+	for(j=0;j<100000;j++);
+
 }
 
-void zero(int c){
+void zero()
+{
 	int j;
-	for(;c>0;c--){
-			GPIOA->BRR = (1<<5); // reset
-			for(j=0;j<200000;j++);
-		}
+	GPIOA->BRR = (1<<5); // reset
+	for(j=0;j<100000;j++);
 }
 
 
 int main(void)
 {
 
+	uint32_t data = 0b10101001110111011100101010000000;
+	int32_t i;
 
 	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
 	GPIOA->MODER |= GPIO_MODER_MODER5_0;
 
+
+
 	while(1){
-		one(1);
-		zero(1);
-		one(1);
-		zero(1);
-		one(1);
-
-		zero(2);
-
-		one(3);
-		zero(1);
-		one(3);
-		zero(1);
-		one(3);
-
-		zero(2);
-
-		one(1);
-		zero(1);
-		one(1);
-		zero(1);
-		one(1);
-
-		zero(8);
+		for(i=31;i>=0;i--){
+			if(data & (1<<i)){
+				one();
+			}
+			else {
+				zero();
+			}
+		}
 
 	}
 
