@@ -51,7 +51,7 @@ void tlacitka()
 		static uint32_t old_s1;
 		static uint32_t off_time_s1;
 
-		if(!(Tick % 5)){
+		if(!(Tick % 40)){
 			uint32_t new_s1 = GPIOC->IDR & (1<<1);
 			uint32_t new_s2 = GPIOC->IDR & (1<<0);
 
