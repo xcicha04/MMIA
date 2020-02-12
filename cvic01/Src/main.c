@@ -12,6 +12,8 @@
 #endif
 
 #define LED_TIME_BLINK 300
+#define LED_TIME_SHORT 100
+#define LED_TIME_LONG 1000
 
 #include "stm32f0xx.h"
 
@@ -21,7 +23,7 @@ void EXTI0_1_IRQHandler(void)
 {
 	if (EXTI->PR & EXTI_PR_PR0) { // check line 0 has triggered the IT
 		EXTI->PR |= EXTI_PR_PR0; // clear the pending bit
-		GPIOB->ODR ^= (1<<0); // toggle
+		//GPIOB->ODR ^= (1<<0); // toggle
 	}
 }
 
@@ -36,6 +38,29 @@ void blikac(void)
 	if (Tick > delay + LED_TIME_BLINK) {
 		GPIOA->ODR ^= (1<<4);
 		delay = Tick;
+	}
+}
+
+void tlacitko()
+{
+	static uint32_t old_tick;
+	if(Tick > old_tick){
+		old_tick = Tick;
+		static uint32_t old_s2;
+		static uint32_t off_time;
+
+
+		if(!(Tick % 5)){
+			uint32_t new_s2 = GPIOC->IDR & (1<<0);
+			if (old_s2 && !new_s2) { // falling edge
+				GPIOB->BSRR = (1<<0);
+				off_time = Tick + LED_TIME_SHORT;
+			}
+			old_s2 = new_s2;
+		}
+		if (Tick > off_time) {
+			GPIOB->BRR = (1<<0);
+		}
 	}
 }
 
@@ -61,7 +86,8 @@ int main()
 
 
 	while(1) {
-		blikac();
+		//blikac();
+		tlacitko();
 	}
 }
 
