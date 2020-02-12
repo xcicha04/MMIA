@@ -13,7 +13,26 @@
 
 #include "stm32f0xx.h"
 
-void one()
+
+
+
+int main()
+{
+	RCC->AHBENR |= RCC_AHBENR_GPIOAEN | RCC_AHBENR_GPIOBEN | RCC_AHBENR_GPIOCEN; // clock enable
+	GPIOA->MODER |= GPIO_MODER_MODER4_0; // LED1 = PA4, output
+	GPIOB->MODER |= GPIO_MODER_MODER0_0; // LED2 = PB0, output
+	GPIOC->PUPDR |= GPIO_PUPDR_PUPDR0_0; // S2 = PC0, pullup
+	GPIOC->PUPDR |= GPIO_PUPDR_PUPDR1_0; // S1 = PC1, pullup
+}
+
+
+
+
+
+
+
+
+/*void one()
 {
 	int j;
 
@@ -54,5 +73,5 @@ int main(void)
 	}
 
 }
-
+*/
 
