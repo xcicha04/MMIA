@@ -41,25 +41,38 @@ void blikac(void)
 	}
 }
 
-void tlacitko()
+void tlacitka()
 {
 	static uint32_t old_tick;
 	if(Tick > old_tick){
 		old_tick = Tick;
 		static uint32_t old_s2;
-		static uint32_t off_time;
-
+		static uint32_t off_time_s2;
+		static uint32_t old_s1;
+		static uint32_t off_time_s1;
 
 		if(!(Tick % 5)){
+			uint32_t new_s1 = GPIOC->IDR & (1<<1);
 			uint32_t new_s2 = GPIOC->IDR & (1<<0);
-			if (old_s2 && !new_s2) { // falling edge
-				GPIOB->BSRR = (1<<0);
-				off_time = Tick + LED_TIME_SHORT;
+
+			if (old_s1 && !new_s1) { 	// Obsluha tlacitka S1, zostupna hrana
+				GPIOA->BSRR = (1<<4);	// = rozsvietime LED1
+				off_time_s1 = Tick + LED_TIME_LONG;
 			}
+
+			if (old_s2 && !new_s2) { 	// Obsluha tlacitka S2, zostupna hrana
+				GPIOB->BSRR = (1<<0);	// = rozsvietenie LED2
+				off_time_s2 = Tick + LED_TIME_SHORT;
+			}
+
+			old_s1 = new_s1;
 			old_s2 = new_s2;
 		}
-		if (Tick > off_time) {
-			GPIOB->BRR = (1<<0);
+		if (Tick > off_time_s1) {	// Podmienka ktora po uplynutom case
+			GPIOA->BRR = (1<<4);	// vypne LED1
+		}
+		if (Tick > off_time_s2) {	// Podmienka ktora po uplynutom case
+			GPIOB->BRR = (1<<0);	// vypne LED2
 		}
 	}
 }
@@ -87,7 +100,7 @@ int main()
 
 	while(1) {
 		//blikac();
-		tlacitko();
+		tlacitka();
 	}
 }
 
