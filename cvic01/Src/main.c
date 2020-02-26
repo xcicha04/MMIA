@@ -1,48 +1,37 @@
-#define sct_nla(x) do { if (x) GPIOB->BSRR = (1 << 5); else GPIOB->BRR = (1 << 5); } while (0)
-#define sct_sdi(x) do { if (x) GPIOB->BSRR = (1 << 4); else GPIOB->BRR = (1 << 4); } while (0)
-#define sct_clk(x) do { if (x) GPIOB->BSRR = (1 << 3); else GPIOB->BRR = (1 << 3); } while (0)
-#define sct_noe(x) do { if (x) GPIOB->BSRR = (1 << 10); else GPIOB->BRR = (1 << 10); } while (0)
 
 #include "stm32f0xx.h"
+#include "LED_driver.h"
 
 
 
-void sct_led(uint32_t value)
+volatile uint32_t Tick;
+
+void SysTick_Handler(void)
 {
-	sct_nla(1);
-
-	for(int i = 0; i < 32; i++){
-		sct_clk(0);
-
-		// delay
-		sct_sdi(value & (1<<i));
-		// delay
-		sct_clk(1);
-	}
-
-	// delay
-
-	sct_nla(0);
+	Tick++;
 }
 
-void sct_init(void)
+void delay(uint16_t time)
 {
-	RCC->AHBENR |= RCC_AHBENR_GPIOBEN;
-	GPIOB->MODER |= GPIO_MODER_MODER4_0;
-	GPIOB->MODER |= GPIO_MODER_MODER3_0;
-	GPIOB->MODER |= GPIO_MODER_MODER5_0;
-	GPIOB->MODER |= GPIO_MODER_MODER10_0;
+	uint32_t now = Tick;
+	while(Tick < (now + time))
+	;
 
-	sct_led(0);
-	sct_noe(0);
 }
 
 
 
 int main(void)
 {
+	SysTick_Config(8000);
 	sct_init();
-	sct_led(0x7A5C36DE);
+	//sct_led(0x7A5C36DE);
+	//sct_value(327);
+	for(int value = 0; value < 1000; value += 111) {
+		sct_value(value);
+		delay(500);
+	}
+
 	while(1)
 		;
 }
