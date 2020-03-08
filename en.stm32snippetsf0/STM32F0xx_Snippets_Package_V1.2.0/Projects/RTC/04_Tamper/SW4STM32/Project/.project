@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>Project</name>
-	<comment />
+	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
@@ -19,28 +19,27 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>com.st.stm32cube.ide.mcu.MCUProjectNature</nature>
 		<nature>org.eclipse.cdt.core.cnature</nature>
-		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
-		<nature>fr.ac6.mcu.ide.core.MCUProjectNature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
+		<nature>com.st.stm32cube.ide.mcu.MCUSW4STM32ConvertedProjectNature</nature>
 	</natures>
 	<linkedResources>
 		<link>
-			<name />
-			<type />
-			<location />
-		</link>
-	<link>
 			<name>SW4STM32/startup_stm32f072xb.s</name>
 			<type>1</type>
-			<location>PARENT-5-PROJECT_LOC/Libraries/CMSIS/Device/ST/STM32F0xx/Source/Templates/gcc/startup_stm32f072xb.s</location>
-		</link><link>
-			<name>User/system_stm32f0xx.c</name>
-			<type>1</type>
-			<location>PARENT-2-PROJECT_LOC/system_stm32f0xx.c</location>
-		</link><link>
+			<locationURI>PARENT-5-PROJECT_LOC/Libraries/CMSIS/Device/ST/STM32F0xx/Source/Templates/gcc/startup_stm32f072xb.s</locationURI>
+		</link>
+		<link>
 			<name>User/main.c</name>
 			<type>1</type>
-			<location>PARENT-2-PROJECT_LOC/main.c</location>
-		</link></linkedResources>
+			<locationURI>PARENT-2-PROJECT_LOC/main.c</locationURI>
+		</link>
+		<link>
+			<name>User/system_stm32f0xx.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/system_stm32f0xx.c</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>
