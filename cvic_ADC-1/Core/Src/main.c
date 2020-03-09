@@ -147,8 +147,8 @@ int main(void)
   	sct_init();
   	HAL_ADC_Start_IT(&hadc);
   	HAL_ADCEx_Calibration_Start(&hadc);
-  	GPIOC->PUPDR |= GPIO_PUPDR_PUPDR0_0;
-  	GPIOC->PUPDR |= GPIO_PUPDR_PUPDR0_1;
+  	//GPIOC->PUPDR |= GPIO_PUPDR_PUPDR0_0;
+  	//GPIOC->PUPDR |= GPIO_PUPDR_PUPDR0_1;
 
   /* USER CODE END 2 */
 
@@ -165,7 +165,7 @@ int main(void)
 	  	  Tick = HAL_GetTick();
 	  }
 
-	  if(HAL_GetTick()>(Tick+400)) state = SHOW_POT;
+	  if(HAL_GetTick()>(Tick+1000)) state = SHOW_POT;
 
 
 
