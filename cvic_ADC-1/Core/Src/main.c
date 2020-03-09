@@ -63,28 +63,33 @@ static void MX_ADC_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-static enum { SHOW_POT, SHOW_VOLT, SHOW_TEMP } state = SHOW_POT;
+volatile enum { SHOW_POT, SHOW_VOLT, SHOW_TEMP } state = SHOW_POT;
+
 
 	void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 	{
+
+
 		static uint32_t channel = 0;
-		static uint32_t avg_pot = 0;
+		static uint32_t avg_pot = 1000;
 		static int32_t temperature;
 		static uint32_t voltage;
-		uint32_t raw_volt;
-		uint32_t raw_temp;
-		uint32_t raw_pot;
+		static uint32_t raw_volt;
+		static uint32_t raw_temp;
+		static uint32_t raw_pot;
+
+		if (__HAL_ADC_GET_FLAG(hadc, ADC_FLAG_EOS)) channel = 0;
+		else channel++;
 
 		switch (channel){
 		case 0:
-
 			raw_pot = avg_pot >> ADC_Q;
 			avg_pot -= raw_pot;
 			avg_pot += HAL_ADC_GetValue(hadc);
 			break;
 		case 1:
 			raw_temp = HAL_ADC_GetValue(hadc);
-			temperature = (raw_temp - (int32_t)(*TEMP30_CAL_ADDR));
+			temperature = ((int32_t)raw_temp - (int32_t)(*TEMP30_CAL_ADDR));
 			temperature = temperature * (int32_t)(110 - 30);
 			temperature = temperature / (int32_t)(*TEMP110_CAL_ADDR - *TEMP30_CAL_ADDR);
 			temperature = temperature + 30;
@@ -96,7 +101,7 @@ static enum { SHOW_POT, SHOW_VOLT, SHOW_TEMP } state = SHOW_POT;
 		}
 		switch (state){
 		case SHOW_POT :
-			sct_value(500 * raw_pot / 4096);
+			sct_value(500*raw_pot/4096);
 			break;
 		case SHOW_VOLT :
 			sct_value(voltage);
@@ -117,7 +122,6 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
-  
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -147,23 +151,23 @@ int main(void)
   	GPIOC->PUPDR |= GPIO_PUPDR_PUPDR0_1;
 
   /* USER CODE END 2 */
- 
- 
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(HAL_GPIO_ReadPin(S1)){
+	  if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_0)==0){
 		  state = SHOW_VOLT;
 	  	  Tick = HAL_GetTick();
 	  }
-	  if(HAL_GPIO_ReadPin(S2)){
+	  if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1)==0){
 		  state = SHOW_TEMP;
 	  	  Tick = HAL_GetTick();
 	  }
 
-	  HAL_Delay(50);
+	  if(HAL_GetTick()>(Tick+400)) state = SHOW_POT;
+
+
 
   }
     /* USER CODE END WHILE */
@@ -254,6 +258,20 @@ static void MX_ADC_Init(void)
   {
     Error_Handler();
   }
+  /** Configure for the selected ADC regular channel to be converted. 
+  */
+  sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
+  if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure for the selected ADC regular channel to be converted. 
+  */
+  sConfig.Channel = ADC_CHANNEL_VREFINT;
+  if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
   /* USER CODE BEGIN ADC_Init 2 */
 
   /* USER CODE END ADC_Init 2 */
@@ -270,11 +288,18 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, SCT_NOE_Pin|SCT_CLK_Pin|SCT_SDI_Pin|SCT_NLA_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : S2_Pin S1_Pin */
+  GPIO_InitStruct.Pin = S2_Pin|S1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : SCT_NOE_Pin SCT_CLK_Pin SCT_SDI_Pin SCT_NLA_Pin */
   GPIO_InitStruct.Pin = SCT_NOE_Pin|SCT_CLK_Pin|SCT_SDI_Pin|SCT_NLA_Pin;
@@ -309,7 +334,7 @@ void Error_Handler(void)
   * @param  line: assert_param error line source number
   * @retval None
   */
-void assert_failed(char *file, uint32_t line)
+void assert_failed(uint8_t *file, uint32_t line)
 { 
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
