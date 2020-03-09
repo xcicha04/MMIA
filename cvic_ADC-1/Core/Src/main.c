@@ -34,6 +34,10 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define ADC_Q 12
+#define TEMP110_CAL_ADDR ((uint16_t*) ((uint32_t) 0x1FFFF7C2))
+#define TEMP30_CAL_ADDR ((uint16_t*) ((uint32_t) 0x1FFFF7B8))
+#define VREFINT_CAL_ADDR ((uint16_t*) ((uint32_t) 0x1FFFF7BA))
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -58,15 +62,49 @@ static void MX_ADC_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-volatile uint32_t raw_pot;
-volatile uint32_t avg_pot = 0;
+
+static enum { SHOW_POT, SHOW_VOLT, SHOW_TEMP } state = SHOW_POT;
 
 	void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 	{
-		raw_pot = avg_pot >> ADC_Q;
-		avg_pot -= raw_pot;
-		avg_pot += HAL_ADC_GetValue(hadc);
+		static uint32_t channel = 0;
+		static uint32_t avg_pot = 0;
+		static int32_t temperature;
+		static uint32_t voltage;
+		uint32_t raw_volt;
+		uint32_t raw_temp;
+		uint32_t raw_pot;
 
+		switch (channel){
+		case 0:
+
+			raw_pot = avg_pot >> ADC_Q;
+			avg_pot -= raw_pot;
+			avg_pot += HAL_ADC_GetValue(hadc);
+			break;
+		case 1:
+			raw_temp = HAL_ADC_GetValue(hadc);
+			temperature = (raw_temp - (int32_t)(*TEMP30_CAL_ADDR));
+			temperature = temperature * (int32_t)(110 - 30);
+			temperature = temperature / (int32_t)(*TEMP110_CAL_ADDR - *TEMP30_CAL_ADDR);
+			temperature = temperature + 30;
+			break;
+		case 2:
+			raw_volt = HAL_ADC_GetValue(hadc);
+			voltage = 330 * (*VREFINT_CAL_ADDR) / raw_volt;
+			break;
+		}
+		switch (state){
+		case SHOW_POT :
+			sct_value(500 * raw_pot / 4096);
+			break;
+		case SHOW_VOLT :
+			sct_value(voltage);
+			break;
+		case SHOW_TEMP :
+			sct_value(temperature);
+			break;
+		}
 	}
 /* USER CODE END 0 */
 
@@ -101,10 +139,12 @@ int main(void)
   MX_GPIO_Init();
   MX_ADC_Init();
   /* USER CODE BEGIN 2 */
-
+  	uint32_t Tick;
   	sct_init();
   	HAL_ADC_Start_IT(&hadc);
   	HAL_ADCEx_Calibration_Start(&hadc);
+  	GPIOC->PUPDR |= GPIO_PUPDR_PUPDR0_0;
+  	GPIOC->PUPDR |= GPIO_PUPDR_PUPDR0_1;
 
   /* USER CODE END 2 */
  
@@ -114,12 +154,22 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if(HAL_GPIO_ReadPin(S1)){
+		  state = SHOW_VOLT;
+	  	  Tick = HAL_GetTick();
+	  }
+	  if(HAL_GPIO_ReadPin(S2)){
+		  state = SHOW_TEMP;
+	  	  Tick = HAL_GetTick();
+	  }
+
+	  HAL_Delay(50);
+
+  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  sct_value(500 * raw_pot / 4096);
-	  HAL_Delay(50);
-  }
+
   /* USER CODE END 3 */
 }
 
