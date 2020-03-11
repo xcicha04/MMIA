@@ -88,8 +88,7 @@ void uart_process_command(char *cmd)
 	printf("prijato: '%s'\n", cmd);
 }
 
-=======
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
+
 static void uart_byte_available(uint8_t c)
 {
 	static uint16_t cnt;
