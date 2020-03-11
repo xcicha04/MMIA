@@ -50,8 +50,13 @@
 /*#define HAL_SPI_MODULE_ENABLED   */
 /*#define HAL_TIM_MODULE_ENABLED   */
 <<<<<<< HEAD
+<<<<<<< HEAD
 #define HAL_UART_MODULE_ENABLED
 /*#define HAL_USART_MODULE_ENABLED   */
+=======
+/*#define HAL_UART_MODULE_ENABLED   */
+#define HAL_USART_MODULE_ENABLED
+>>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
 =======
 /*#define HAL_UART_MODULE_ENABLED   */
 #define HAL_USART_MODULE_ENABLED

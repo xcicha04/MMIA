@@ -24,7 +24,11 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 <<<<<<< HEAD
+<<<<<<< HEAD
 #include <stdio.h>
+=======
+
+>>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
 =======
 
 >>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
@@ -49,7 +53,11 @@
 
 /* Private variables ---------------------------------------------------------*/
 <<<<<<< HEAD
+<<<<<<< HEAD
 UART_HandleTypeDef huart2;
+=======
+USART_HandleTypeDef husart2;
+>>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
 =======
 USART_HandleTypeDef husart2;
 >>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
@@ -64,7 +72,11 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 <<<<<<< HEAD
+<<<<<<< HEAD
 static void MX_USART2_UART_Init(void);
+=======
+static void MX_USART2_Init(void);
+>>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
 =======
 static void MX_USART2_Init(void);
 >>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
@@ -74,6 +86,7 @@ static void MX_USART2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+<<<<<<< HEAD
 <<<<<<< HEAD
 int _write(int file, char const *buf, int n)
 {
@@ -89,6 +102,8 @@ void uart_process_command(char *cmd)
 }
 
 
+=======
+>>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
 static void uart_byte_available(uint8_t c)
 {
 	static uint16_t cnt;
@@ -103,7 +118,10 @@ static void uart_byte_available(uint8_t c)
 	}
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
 =======
 >>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
 /* USER CODE END 0 */
@@ -139,10 +157,15 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
 <<<<<<< HEAD
+<<<<<<< HEAD
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   uint32_t uart_rx_read_ptr = 0;
   char uart_rx_buf[RX_BUFFER_LEN];
+=======
+  MX_USART2_Init();
+  /* USER CODE BEGIN 2 */
+>>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
 =======
   MX_USART2_Init();
   /* USER CODE BEGIN 2 */
@@ -208,7 +231,11 @@ void SystemClock_Config(void)
   * @retval None
   */
 <<<<<<< HEAD
+<<<<<<< HEAD
 static void MX_USART2_UART_Init(void)
+=======
+static void MX_USART2_Init(void)
+>>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
 =======
 static void MX_USART2_Init(void)
 >>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
@@ -222,6 +249,7 @@ static void MX_USART2_Init(void)
 
   /* USER CODE END USART2_Init 1 */
 <<<<<<< HEAD
+<<<<<<< HEAD
   huart2.Instance = USART2;
   huart2.Init.BaudRate = 38400;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
@@ -234,6 +262,8 @@ static void MX_USART2_Init(void)
   huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
   if (HAL_UART_Init(&huart2) != HAL_OK)
 =======
+=======
+>>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
   husart2.Instance = USART2;
   husart2.Init.BaudRate = 38400;
   husart2.Init.WordLength = USART_WORDLENGTH_8B;
@@ -244,6 +274,9 @@ static void MX_USART2_Init(void)
   husart2.Init.CLKPhase = USART_PHASE_1EDGE;
   husart2.Init.CLKLastBit = USART_LASTBIT_DISABLE;
   if (HAL_USART_Init(&husart2) != HAL_OK)
+<<<<<<< HEAD
+>>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
+=======
 >>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
   {
     Error_Handler();
