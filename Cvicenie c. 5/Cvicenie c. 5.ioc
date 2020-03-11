@@ -23,20 +23,8 @@ Mcu.Name=STM32F030R8Tx
 Mcu.Package=LQFP64
 Mcu.Pin0=PA2
 Mcu.Pin1=PA3
-<<<<<<< HEAD
-<<<<<<< HEAD
 Mcu.Pin2=VP_SYS_VS_Systick
 Mcu.PinsNb=3
-=======
-Mcu.Pin2=PA4
-Mcu.Pin3=VP_SYS_VS_Systick
-Mcu.PinsNb=4
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
-=======
-Mcu.Pin2=PA4
-Mcu.Pin3=VP_SYS_VS_Systick
-Mcu.PinsNb=4
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
 Mcu.ThirdPartyNb=0
 Mcu.UserConstants=
 Mcu.UserName=STM32F030R8Tx
@@ -49,25 +37,10 @@ NVIC.NonMaskableInt_IRQn=true\:0\:0\:false\:false\:true\:false\:false
 NVIC.PendSV_IRQn=true\:0\:0\:false\:false\:true\:false\:false
 NVIC.SVC_IRQn=true\:0\:0\:false\:false\:true\:false\:false
 NVIC.SysTick_IRQn=true\:0\:0\:false\:false\:true\:false\:true
-<<<<<<< HEAD
-<<<<<<< HEAD
 PA2.Mode=Asynchronous
 PA2.Signal=USART2_TX
 PA3.Mode=Asynchronous
 PA3.Signal=USART2_RX
-=======
-=======
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
-PA2.Mode=Synchronous
-PA2.Signal=USART2_TX
-PA3.Mode=Synchronous
-PA3.Signal=USART2_RX
-PA4.Mode=Synchronous
-PA4.Signal=USART2_CK
-<<<<<<< HEAD
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
-=======
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
 PinOutPanel.RotationAngle=0
 ProjectManager.AskForMigrate=true
 ProjectManager.BackupPrevious=false
@@ -95,32 +68,14 @@ ProjectManager.StackSize=0x400
 ProjectManager.TargetToolchain=STM32CubeIDE
 ProjectManager.ToolChainLocation=
 ProjectManager.UnderRoot=true
-<<<<<<< HEAD
-<<<<<<< HEAD
 ProjectManager.functionlistsort=1-MX_GPIO_Init-GPIO-false-HAL-true,2-MX_DMA_Init-DMA-false-HAL-true,3-SystemClock_Config-RCC-false-HAL-false,4-MX_USART2_Init-USART2-false-HAL-true
-=======
-ProjectManager.functionlistsort=1-MX_GPIO_Init-GPIO-false-HAL-true,2-MX_DMA_Init-DMA-false-HAL-true,3-SystemClock_Config-RCC-false-HAL-false,4-MX_USART2_UART_Init-USART2-false-HAL-true
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
-=======
-ProjectManager.functionlistsort=1-MX_GPIO_Init-GPIO-false-HAL-true,2-MX_DMA_Init-DMA-false-HAL-true,3-SystemClock_Config-RCC-false-HAL-false,4-MX_USART2_UART_Init-USART2-false-HAL-true
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
 RCC.FamilyName=M
 RCC.IPParameters=FamilyName,PLLCLKFreq_Value,PLLMCOFreq_Value,TimSysFreq_Value
 RCC.PLLCLKFreq_Value=8000000
 RCC.PLLMCOFreq_Value=4000000
 RCC.TimSysFreq_Value=8000000
-<<<<<<< HEAD
-<<<<<<< HEAD
 USART2.IPParameters=VirtualMode-Asynchronous
 USART2.VirtualMode-Asynchronous=VM_ASYNC
-=======
-USART2.IPParameters=VirtualMode-Synchronous
-USART2.VirtualMode-Synchronous=VM_SYNC
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
-=======
-USART2.IPParameters=VirtualMode-Synchronous
-USART2.VirtualMode-Synchronous=VM_SYNC
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
 VP_SYS_VS_Systick.Mode=SysTick
 VP_SYS_VS_Systick.Signal=SYS_VS_Systick
 board=custom

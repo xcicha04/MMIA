@@ -79,8 +79,6 @@ void HAL_MspInit(void)
 }
 
 /**
-<<<<<<< HEAD
-<<<<<<< HEAD
 * @brief UART MSP Initialization
 * This function configures the hardware resources used in this example
 * @param huart: UART handle pointer
@@ -90,22 +88,6 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   if(huart->Instance==USART2)
-=======
-=======
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
-* @brief USART MSP Initialization
-* This function configures the hardware resources used in this example
-* @param husart: USART handle pointer
-* @retval None
-*/
-void HAL_USART_MspInit(USART_HandleTypeDef* husart)
-{
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-  if(husart->Instance==USART2)
-<<<<<<< HEAD
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
-=======
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
   {
   /* USER CODE BEGIN USART2_MspInit 0 */
 
@@ -116,22 +98,9 @@ void HAL_USART_MspInit(USART_HandleTypeDef* husart)
     __HAL_RCC_GPIOA_CLK_ENABLE();
     /**USART2 GPIO Configuration    
     PA2     ------> USART2_TX
-<<<<<<< HEAD
-<<<<<<< HEAD
     PA3     ------> USART2_RX 
     */
     GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;
-=======
-=======
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
-    PA3     ------> USART2_RX
-    PA4     ------> USART2_CK 
-    */
-    GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4;
-<<<<<<< HEAD
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
-=======
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
@@ -153,15 +122,7 @@ void HAL_USART_MspInit(USART_HandleTypeDef* husart)
       Error_Handler();
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     __HAL_LINKDMA(huart,hdmarx,hdma_usart2_rx);
-=======
-    __HAL_LINKDMA(husart,hdmarx,hdma_usart2_rx);
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
-=======
-    __HAL_LINKDMA(husart,hdmarx,hdma_usart2_rx);
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
 
   /* USER CODE BEGIN USART2_MspInit 1 */
 
@@ -171,8 +132,6 @@ void HAL_USART_MspInit(USART_HandleTypeDef* husart)
 }
 
 /**
-<<<<<<< HEAD
-<<<<<<< HEAD
 * @brief UART MSP De-Initialization
 * This function freeze the hardware resources used in this example
 * @param huart: UART handle pointer
@@ -181,21 +140,6 @@ void HAL_USART_MspInit(USART_HandleTypeDef* husart)
 void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
 {
   if(huart->Instance==USART2)
-=======
-=======
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
-* @brief USART MSP De-Initialization
-* This function freeze the hardware resources used in this example
-* @param husart: USART handle pointer
-* @retval None
-*/
-void HAL_USART_MspDeInit(USART_HandleTypeDef* husart)
-{
-  if(husart->Instance==USART2)
-<<<<<<< HEAD
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
-=======
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
   {
   /* USER CODE BEGIN USART2_MspDeInit 0 */
 
@@ -205,28 +149,12 @@ void HAL_USART_MspDeInit(USART_HandleTypeDef* husart)
   
     /**USART2 GPIO Configuration    
     PA2     ------> USART2_TX
-<<<<<<< HEAD
-<<<<<<< HEAD
     PA3     ------> USART2_RX 
     */
     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_2|GPIO_PIN_3);
 
     /* USART2 DMA DeInit */
     HAL_DMA_DeInit(huart->hdmarx);
-=======
-=======
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
-    PA3     ------> USART2_RX
-    PA4     ------> USART2_CK 
-    */
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4);
-
-    /* USART2 DMA DeInit */
-    HAL_DMA_DeInit(husart->hdmarx);
-<<<<<<< HEAD
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
-=======
->>>>>>> 04b5605d44fdb554e5a9673c8170875716a55c9e
   /* USER CODE BEGIN USART2_MspDeInit 1 */
 
   /* USER CODE END USART2_MspDeInit 1 */
