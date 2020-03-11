@@ -40,6 +40,7 @@
 #define RX_BUFFER_LEN 64
 #define uart_rx_write_ptr (RX_BUFFER_LEN - hdma_usart2_rx.Instance->CNDTR)
 #define CMD_BUFFER_LEN 256
+#define RX_FLUSH_TIME 2000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -131,6 +132,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   uint32_t uart_rx_read_ptr = 0;
   char uart_rx_buf[RX_BUFFER_LEN];
+  uint32_t time;
 
   //MX_USART2_Init();
 
@@ -148,7 +150,19 @@ int main(void)
 	  while (uart_rx_read_ptr != uart_rx_write_ptr) {
 		  uint8_t b = uart_rx_buf[uart_rx_read_ptr];
 		  if (++uart_rx_read_ptr >= RX_BUFFER_LEN) uart_rx_read_ptr = 0; // increase read pointer
+		  if(b<32 || b>126) continue;
 		  uart_byte_available(b); // process every received byte with the RX state machine
+		  time = HAL_GetTick();
+	  }
+
+	  if((time + RX_FLUSH_TIME)< HAL_GetTick()){
+		  for(int i=0;i<RX_BUFFER_LEN;i++){
+			  if(uart_rx_buf[i]!=0){
+				  uart_rx_buf[i]=0;
+				  continue;
+			  }
+			  break;
+		  }
 	  }
     /* USER CODE END WHILE */
 
