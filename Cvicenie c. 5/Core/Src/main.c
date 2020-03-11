@@ -94,6 +94,7 @@ static void uart_byte_available(uint8_t c)
 		uart_process_command(data);
 		cnt = 0;
 	}
+
 }
 
 /* USER CODE END 0 */
@@ -105,7 +106,7 @@ static void uart_byte_available(uint8_t c)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	uint8_t c;
+	//uint8_t c;
 
   /* USER CODE END 1 */
 
@@ -131,7 +132,7 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   uint32_t uart_rx_read_ptr = 0;
-  char uart_rx_buf[RX_BUFFER_LEN];
+  uint8_t uart_rx_buf[RX_BUFFER_LEN];
   uint32_t time;
 
   //MX_USART2_Init();
@@ -150,7 +151,7 @@ int main(void)
 	  while (uart_rx_read_ptr != uart_rx_write_ptr) {
 		  uint8_t b = uart_rx_buf[uart_rx_read_ptr];
 		  if (++uart_rx_read_ptr >= RX_BUFFER_LEN) uart_rx_read_ptr = 0; // increase read pointer
-		  if(b<32 || b>126) continue;
+		  if((b!=10 && b<32) || b>126) break;
 		  uart_byte_available(b); // process every received byte with the RX state machine
 		  time = HAL_GetTick();
 	  }
