@@ -25,7 +25,7 @@
 /* USER CODE BEGIN Includes */
 
 #include <stdio.h>
-
+#include <string.h>
 
 
 /* USER CODE END Includes */
@@ -78,7 +78,39 @@ int _write(int file, char const *buf, int n)
 
 void uart_process_command(char *cmd)
 {
-	printf("prijato: '%s'\n", cmd);
+	char *token;
+
+	//printf("prijato: '%s'\n", cmd);
+	token = strtok(cmd, " ");
+
+	while(token){
+		if (strcasecmp(token, "HELLO") == 0) {
+			printf("Komunikace OK\n");
+		}
+		else if(strcasecmp(token, "LED1")){
+
+		}
+		else if(strcasecmp(token, "LED2")){
+
+		}
+		else if(strcasecmp(token, "STATUS")){
+
+		}
+		else if(strcasecmp(token, "READ")){
+
+		}
+		else if(strcasecmp(token, "WRITE")){
+
+		}
+		else if(strcasecmp(token, "DUMP")){
+
+		}
+		token = strtok(NULL, " ");
+	}
+
+
+
+
 }
 
 
