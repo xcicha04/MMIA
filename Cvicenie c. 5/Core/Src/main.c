@@ -37,7 +37,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define RX_BUFFER_LEN 64
+#define RX_BUFFER_LEN 2048
 #define uart_rx_write_ptr (RX_BUFFER_LEN - hdma_usart2_rx.Instance->CNDTR)
 #define CMD_BUFFER_LEN 256
 #define RX_FLUSH_TIME 2000
@@ -83,29 +83,50 @@ void uart_process_command(char *cmd)
 	//printf("prijato: '%s'\n", cmd);
 	token = strtok(cmd, " ");
 
-	while(token){
+	if (strcasecmp(token, "HELLO") == 0) {
+				printf("Komunikace OK\n");
+
+			}
+			else if(strcasecmp(token, "LED1")==0){
+				token = strtok(NULL, " ");
+				if(strcasecmp(token, "ON")==0) HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, 1);
+				if(strcasecmp(token, "OFF")==0) HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, 0);
+			}
+			else if(strcasecmp(token, "LED2")==0){
+				token = strtok(NULL, " ");
+				if(strcasecmp(token, "ON")==0) HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, 1);
+				if(strcasecmp(token, "OFF")==0) HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, 0);
+			}
+
+	while((token = strtok(NULL, " "))!=NULL){
 		if (strcasecmp(token, "HELLO") == 0) {
 			printf("Komunikace OK\n");
-		}
-		else if(strcasecmp(token, "LED1")){
 
 		}
-		else if(strcasecmp(token, "LED2")){
+		else if(strcasecmp(token, "LED1")==0){
+			token = strtok(NULL, " ");
+			if(strcasecmp(token, "ON")==0) HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, 1);
+			if(strcasecmp(token, "OFF")==0) HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, 0);
+		}
+		else if(strcasecmp(token, "LED2")==0){
+			token = strtok(NULL, " ");
+			if(strcasecmp(token, "ON")==0) HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, 1);
+			if(strcasecmp(token, "OFF")==0) HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, 0);
+		}
+		else if(strcasecmp(token, "STATUS")==0){
 
 		}
-		else if(strcasecmp(token, "STATUS")){
+		else if(strcasecmp(token, "READ")==0){
 
 		}
-		else if(strcasecmp(token, "READ")){
+		else if(strcasecmp(token, "WRITE")==0){
 
 		}
-		else if(strcasecmp(token, "WRITE")){
+		else if(strcasecmp(token, "DUMP")==0){
 
 		}
-		else if(strcasecmp(token, "DUMP")){
 
-		}
-		token = strtok(NULL, " ");
+
 	}
 
 
@@ -117,7 +138,7 @@ void uart_process_command(char *cmd)
 static void uart_byte_available(uint8_t c)
 {
 	static uint16_t cnt;
-	static char data[CMD_BUFFER_LEN];
+	char data[CMD_BUFFER_LEN];
 
 	if (cnt < CMD_BUFFER_LEN) data[cnt++] = c;
 
@@ -192,9 +213,10 @@ int main(void)
 		  for(int i=0;i<RX_BUFFER_LEN;i++){
 			  if(uart_rx_buf[i]!=0){
 				  uart_rx_buf[i]=0;
+				  uart_rx_read_ptr = 0;
 				  continue;
 			  }
-			  break;
+
 		  }
 	  }
     /* USER CODE END WHILE */
@@ -295,9 +317,31 @@ static void MX_DMA_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : LED1_Pin */
+  GPIO_InitStruct.Pin = LED1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(LED1_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : LED2_Pin */
+  GPIO_InitStruct.Pin = LED2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(LED2_GPIO_Port, &GPIO_InitStruct);
 
 }
 
