@@ -37,7 +37,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define RX_BUFFER_LEN 2048
+#define RX_BUFFER_LEN 256
 #define uart_rx_write_ptr (RX_BUFFER_LEN - hdma_usart2_rx.Instance->CNDTR)
 #define CMD_BUFFER_LEN 256
 #define RX_FLUSH_TIME 2000
@@ -76,29 +76,17 @@ int _write(int file, char const *buf, int n)
 }
 
 
-void uart_process_command(char *cmd)
+static void uart_process_command(char *cmd)
 {
 	char *token;
 
 	//printf("prijato: '%s'\n", cmd);
-	token = strtok(cmd, " ");
 
-	if (strcasecmp(token, "HELLO") == 0) {
-				printf("Komunikace OK\n");
 
-			}
-			else if(strcasecmp(token, "LED1")==0){
-				token = strtok(NULL, " ");
-				if(strcasecmp(token, "ON")==0) HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, 1);
-				if(strcasecmp(token, "OFF")==0) HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, 0);
-			}
-			else if(strcasecmp(token, "LED2")==0){
-				token = strtok(NULL, " ");
-				if(strcasecmp(token, "ON")==0) HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, 1);
-				if(strcasecmp(token, "OFF")==0) HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, 0);
-			}
 
-	while((token = strtok(NULL, " "))!=NULL){
+	do {
+		token = strtok(cmd, " ");
+		cmd = NULL;
 		if (strcasecmp(token, "HELLO") == 0) {
 			printf("Komunikace OK\n");
 
@@ -114,7 +102,8 @@ void uart_process_command(char *cmd)
 			if(strcasecmp(token, "OFF")==0) HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, 0);
 		}
 		else if(strcasecmp(token, "STATUS")==0){
-
+			printf("LED1 = %d\n", HAL_GPIO_ReadPin(LED1_GPIO_Port, LED1_Pin));
+			printf("LED2 = %d\n", HAL_GPIO_ReadPin(LED2_GPIO_Port, LED2_Pin));
 		}
 		else if(strcasecmp(token, "READ")==0){
 
@@ -125,9 +114,7 @@ void uart_process_command(char *cmd)
 		else if(strcasecmp(token, "DUMP")==0){
 
 		}
-
-
-	}
+	} while(token!=NULL);
 
 
 
