@@ -17,4 +17,4 @@
 
 void sct_led(uint32_t value);
 void sct_init(void);
-void sct_value(uint16_t value);
+void sct_value(uint16_t value, uint8_t DP_pos, uint8_t bar_show);

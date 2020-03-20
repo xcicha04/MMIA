@@ -88,8 +88,6 @@ static void uart_process_command(char *cmd)
 	uint16_t mem_address;
 	//printf("prijato: '%s'\n", cmd);
 
-
-
 	do {
 		token = strtok(cmd, " ");
 		cmd = NULL;

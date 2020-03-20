@@ -37,6 +37,10 @@
 #define TEMP110_CAL_ADDR ((uint16_t*) ((uint32_t) 0x1FFFF7C2))
 #define TEMP30_CAL_ADDR ((uint16_t*) ((uint32_t) 0x1FFFF7B8))
 #define VREFINT_CAL_ADDR ((uint16_t*) ((uint32_t) 0x1FFFF7BA))
+#define DP_DISP_1 1
+#define DP_DONT_SHOW 0
+#define SHOW_BAR 1
+#define DONT_SHOW_BAR 0
 
 /* USER CODE END PD */
 
@@ -101,13 +105,13 @@ volatile enum { SHOW_POT, SHOW_VOLT, SHOW_TEMP } state = SHOW_POT;
 		}
 		switch (state){
 		case SHOW_POT :
-			sct_value(500*raw_pot/4096);
+			sct_value(500*raw_pot/4096, DP_DONT_SHOW , SHOW_BAR);
 			break;
 		case SHOW_VOLT :
-			sct_value(voltage);
+			sct_value(voltage, DP_DISP_1, DONT_SHOW_BAR);
 			break;
 		case SHOW_TEMP :
-			sct_value(temperature);
+			sct_value(temperature, DP_DONT_SHOW , DONT_SHOW_BAR);
 			break;
 		}
 	}
@@ -157,11 +161,11 @@ int main(void)
   while (1)
   {
 	  if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_0)==0){
-		  state = SHOW_VOLT;
+		  state = SHOW_TEMP;
 	  	  Tick = HAL_GetTick();
 	  }
 	  if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1)==0){
-		  state = SHOW_TEMP;
+		  state = SHOW_VOLT;
 	  	  Tick = HAL_GetTick();
 	  }
 
